@@ -1,0 +1,3 @@
+Name,Value,Timestamp,Step
+"test_set_loss",0.8646067976951599,1625550316156,1
+"test_set_accuracy",0.375,1625550316156,1
