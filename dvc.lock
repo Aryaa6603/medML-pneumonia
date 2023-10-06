@@ -1,0 +1,74 @@
+schema: '2.0'
+stages:
+  data-processing:
+    cmd: python -m task-2-data-processing.src.data_processing
+    deps:
+    - path: src/const/general_const.py
+      md5: 730d05e22f3defa392555d8a311c55a8
+      size: 363
+    - path: task-1-data-labeling/data/labeled-data
+      md5: 5e95cbf05923c6f7a093e84fbdba9463.dir
+      size: 1236482806
+      nfiles: 5856
+    - path: task-2-data-processing/src/const/processing_const.py
+      md5: 27123f2fc00bc3b5f39a61ac98b50910
+      size: 382
+    - path: task-2-data-processing/src/data_processing.py
+      md5: f512e7c857e9d12a5c4d1d51bf20277b
+      size: 2622
+    outs:
+    - path: task-2-data-processing/data/processed-data
+      md5: 5a2aee9b8951b0d9993ebc9335982ee9.dir
+      size: 107673470
+      nfiles: 5856
+  modeling:
+    cmd: python -m task-3-modeling.src.train
+    deps:
+    - path: src/const/general_const.py
+      md5: 730d05e22f3defa392555d8a311c55a8
+      size: 363
+    - path: task-2-data-processing/data/processed-data
+      md5: 5a2aee9b8951b0d9993ebc9335982ee9.dir
+      size: 107673470
+      nfiles: 5856
+    - path: task-3-modeling/src/const/class_names.txt
+      md5: 0029696b605cde6b899390a1104419bd
+      size: 16
+    - path: task-3-modeling/src/const/modeling_const.py
+      md5: eb4fba36c941daf9a5458cb2bacd767a
+      size: 587
+    - path: task-3-modeling/src/train.py
+      md5: 836f480034f17e9ef69b501f0c2312f9
+      size: 3641
+    outs:
+    - path: prod_model
+      md5: 6fc4d52cd62fbca5c37b0a3a5dbfbbba.dir
+      size: 99815927
+      nfiles: 4
+    - path: task-3-modeling/model-checkpoint
+      md5: 922b7db16fef38811a580b125df0d077.dir
+      size: 99816050
+      nfiles: 5
+    - path: task-4-evaluating/eval/params/params.yml
+      md5: a90a55257f10fffd32ea0645ce31f44f
+      size: 32
+  evaluating:
+    cmd: python -m task-4-evaluating.src.evaluation
+    deps:
+    - path: prod_model
+      md5: 6fc4d52cd62fbca5c37b0a3a5dbfbbba.dir
+      size: 99815927
+      nfiles: 4
+    - path: src/const/general_const.py
+      md5: 730d05e22f3defa392555d8a311c55a8
+      size: 363
+    - path: task-4-evaluating/src/const/evaluating_const.py
+      md5: bc97cc442ada9f93ab1b7212ed063e89
+      size: 290
+    - path: task-4-evaluating/src/evaluation.py
+      md5: 5027d59bc20658a00cae3eb0e2355932
+      size: 1032
+    outs:
+    - path: task-4-evaluating/eval/metrics/metrics.csv
+      md5: 700b690d8dd5df0815d234f7a1120da9
+      size: 121

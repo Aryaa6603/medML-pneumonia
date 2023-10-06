@@ -1,0 +1,36 @@
+stages:
+  data-processing:
+    cmd: python -m task-2-data-processing.src.data_processing
+    deps:
+    - src/const/general_const.py
+    - task-1-data-labeling/data/labeled-data
+    - task-2-data-processing/src/const/processing_const.py
+    - task-2-data-processing/src/data_processing.py
+    outs:
+    - task-2-data-processing/data/processed-data:
+        persist: true
+  modeling:
+    cmd: python -m task-3-modeling.src.train
+    deps:
+    - src/const/general_const.py
+    - task-2-data-processing/data/processed-data
+    - task-3-modeling/src/const/class_names.txt
+    - task-3-modeling/src/const/modeling_const.py
+    - task-3-modeling/src/train.py
+    outs:
+    - prod_model:
+        persist: true
+    - task-3-modeling/model-checkpoint:
+        persist: true
+    - task-4-evaluating/eval/params/params.yml:
+        cache: false
+  evaluating:
+    cmd: python -m task-4-evaluating.src.evaluation
+    deps:
+    - prod_model
+    - src/const/general_const.py
+    - task-4-evaluating/src/const/evaluating_const.py
+    - task-4-evaluating/src/evaluation.py
+    metrics:
+    - task-4-evaluating/eval/metrics/metrics.csv:
+        cache: false
